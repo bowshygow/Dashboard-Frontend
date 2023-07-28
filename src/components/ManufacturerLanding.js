@@ -1,14 +1,25 @@
-  
-// frontend/src/components/ManufacturerLanding.js
-
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
 
 const ManufacturerLanding = () => {
   const [messages, setMessages] = useState([]); // An array to store the received messages
 
   useEffect(() => {
     // Implement fetching messages logic here (e.g., making API requests to get messages)
-    // Update the "messages" state with the received messages
+    const fetchMessages = async () => {
+      try {
+        // Make an API request to get all orders for the Manufacturer
+        const response = await axios.get('/api/manufacturer/orders');
+
+        // Update the "messages" state with the received messages
+        setMessages(response.data.data);
+      } catch (error) {
+        console.error('Error fetching messages:', error.message);
+      }
+    };
+
+    // Call the fetchMessages function to get the messages when the component mounts
+    fetchMessages();
   }, []);
 
   return (

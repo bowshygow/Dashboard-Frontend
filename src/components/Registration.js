@@ -1,6 +1,4 @@
-  
-// frontend/src/components/Registration.js
-
+import axios from 'axios';
 import React, { useState } from 'react';
 
 const Registration = () => {
@@ -8,9 +6,37 @@ const Registration = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('manufacturer'); // Default value set to 'manufacturer'
 
-  const handleRegister = () => {
-    // Implement registration logic here (e.g., making API requests to create a new user)
-    // You can use the "username", "password", and "userType" states to get user input
+  //axios link to be checked
+
+  const handleRegister = async () => {
+    try {
+      if (userType === 'manufacturer') {
+        const response = await axios.post('http://localhost:5000/api/auth/register/manufacturer', {
+          username,
+          password,
+        });
+
+        // Registration successful for manufacturer
+        console.log('Manufacturer registration successful:', response.data);
+
+        // You can handle successful registration here, such as showing a success message or redirecting the user to the login page
+      } else if (userType === 'transporter') {
+        const response = await axios.post('http://localhost:5000/api/auth/register/transporter', {
+          username,
+          password,
+        });
+
+        // Registration successful for transporter
+        console.log('Transporter registration successful:', response.data);
+
+        // You can handle successful registration here, such as showing a success message or redirecting the user to the login page
+      }
+    } catch (error) {
+      // Registration failed
+      console.error('Registration failed:', error.message);
+
+      // You can handle registration errors here, such as showing an error message to the user
+    }
   };
 
   return (

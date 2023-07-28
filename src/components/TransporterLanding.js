@@ -1,14 +1,25 @@
-  
-// frontend/src/components/TransporterLanding.js
-
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
 
 const TransporterLanding = () => {
   const [messages, setMessages] = useState([]); // An array to store the received messages
 
   useEffect(() => {
-    // Implement fetching messages logic here (e.g., making API requests to get messages)
-    // Update the "messages" state with the received messages
+    // Implement fetching messages logic here
+    const fetchMessages = async () => {
+      try {
+        // Make an API request to fetch messages for the transporter
+        const response = await axios.get('/api/transporter/orders');
+
+        // Update the "messages" state with the received messages
+        setMessages(response.data);
+      } catch (error) {
+        console.error('Error fetching messages:', error.message);
+      }
+    };
+
+    // Call the fetchMessages function
+    fetchMessages();
   }, []);
 
   return (
