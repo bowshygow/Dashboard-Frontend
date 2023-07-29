@@ -14,7 +14,6 @@ function App() {
         <Route path="/manufacturer" component={Manufacturer} />
         <Route path="/transporter" component={Transporter} />
         {/* Add any other routes as needed */}
-        {/* If you want to create a custom 404 page, you can add it here */}
       </Switch>
     </Router>
   );
