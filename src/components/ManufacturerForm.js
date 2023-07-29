@@ -9,6 +9,8 @@ const ManufacturerForm = () => {
   const [pickupAddress, setPickupAddress] = useState('');
   const [selectedTransporter, setSelectedTransporter] = useState('');
 
+  
+
   const handleFormSubmit = async () => {
     const formData = {
       order_id: orderId,
@@ -20,7 +22,7 @@ const ManufacturerForm = () => {
     };
 
     try {
-      const response = await axios.post('/api/manufacturer/order', formData);
+      const response = await axios.post('http://localhost:5000/api/manufacturer/order', formData);
 
       console.log('Order created successfully:', response.data);
 

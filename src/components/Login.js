@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  
+  const history = useHistory();
 
   const handleLogin = async () => {
     try {
@@ -12,20 +17,38 @@ const Login = () => {
         username,
         password,
       });
-
+  
       // Login successful
       console.log('Login successful:', response.data);
+  
+      // Get the token from the response
+      const token = response.data.token;
+  
+      // Store the token in local storage
+      localStorage.setItem('authToken', token);
+  
+      // Decode the token to get additional user information, such as the user's role (manufacturer or transporter)
+      const decodedToken = jwt_decode(token);
+      console.log('User Role:', decodedToken.userType);
 
-      // You can handle successful login here, such as storing user data in state or local storage, and redirecting the user to the appropriate dashboard
-      // For example: history.push(`/${response.data.userType}`);
+      // Redirect the user to the appropriate dashboard based on user type
+      if (decodedToken.userType === 'manufacturer') {
+        history.push('/manufacturer');
+        window.location.reload();
+        
+      } else if (decodedToken.userType === 'transporter') {
+        history.push('/transporter');
+        window.location.reload();
+      }
+      
     } catch (error) {
       // Login failed
       console.error('Login failed:', error.message);
-
+  
       // You can handle login errors here, such as showing an error message to the user
     }
   };
-
+  
   return (
     <div>
       <h2>Login</h2>
