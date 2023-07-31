@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -20,6 +21,8 @@ const Login = () => {
   
       // Login successful
       console.log('Login successful:', response.data);
+      toast.success('Login successful:');
+      
   
       // Get the token from the response
       const token = response.data.token;
@@ -33,17 +36,25 @@ const Login = () => {
 
       // Redirect the user to the appropriate dashboard based on user type
       if (decodedToken.userType === 'manufacturer') {
-        history.push('/manufacturer');
+        history.push({
+          pathname: '/manufacturer',
+          state: { username }, // Pass the username as a state object
+        });
         window.location.reload();
-        
+
+
       } else if (decodedToken.userType === 'transporter') {
-        history.push('/transporter');
+        history.push({
+          pathname: '/transporter',
+          state: { username }, // Pass the username as a state object
+        });
         window.location.reload();
       }
       
     } catch (error) {
       // Login failed
       console.error('Login failed:', error.message);
+      toast.error('Login failed:');
   
       // You can handle login errors here, such as showing an error message to the user
     }

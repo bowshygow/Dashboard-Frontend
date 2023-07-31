@@ -1,26 +1,44 @@
-  // frontend/src/components/TransporterForm.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import React, { useState } from 'react';
-import axios from 'axios'; // Import axios
-
-const TransporterForm = () => {
-  const [orderId, setOrderId] = useState(''); // You can populate the list of order IDs here
+const TransporterForm = ({username}) => {
+  const [orderId, setOrderId] = useState('');
   const [price, setPrice] = useState('');
+  const [orderIdsList, setOrderIdsList] = useState([]);
+
+  useEffect(() => {
+    fetchTransporterOrders();
+  }, []);
+
+  const fetchTransporterOrders = async () => {
+    try {
+      // Make an API request to fetch all orders assigned to the transporter
+      // needs username for post req
+      const response = await axios.post('http://localhost:5000/api/transporter/orders',{username});
+
+      // Extract order IDs from the response and update the orderIdsList state
+      const orderIds = response.data.map((order) => order.order_id);
+      setOrderIdsList(orderIds);
+    } catch (error) {
+      console.error('Error fetching transporter orders:', error.message);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
 
   const handleReply = async () => {
+    // Check if an order ID is selected
+    if (!orderId) {
+      return alert('Please select an Order ID.');
+    }
+
+    // Check if the price is provided
+    if (!price) {
+      return alert('Please provide the price.');
+    }
+
     try {
-      // Check if an order ID is selected
-      if (!orderId) {
-        return alert('Please select an Order ID.');
-      }
-
-      // Check if the price is provided
-      if (!price) {
-        return alert('Please provide the price.');
-      }
-
       // Make an API request to reply to the manufacturer
-      await axios.post('/api/transporter/reply', {
+      await axios.post('http://localhost:5000/api/transporter/reply', {
         orderId,
         price,
       });
@@ -30,7 +48,7 @@ const TransporterForm = () => {
     } catch (error) {
       // If there is an error, show an error message
       alert('Error occurred while sending the reply.');
-      console.error('Error sending reply:', error.message);
+      console.error('Error :', error.message);
     }
   };
 
@@ -39,13 +57,16 @@ const TransporterForm = () => {
       <h2>Transporter Form</h2>
       <select value={orderId} onChange={(e) => setOrderId(e.target.value)}>
         <option value="">Select Order ID</option>
-        {/* Populate the list of order IDs here */}
+        {orderIdsList.map((orderId) => (
+          <option key={orderId} value={orderId}>
+            {orderId}
+          </option>
+        ))}
       </select>
       <input type="text" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
-      <button onClick={handleReply}>Reply</button>
+      <button onClick={handleReply}>Accept</button>
     </div>
   );
 };
 
 export default TransporterForm;
-

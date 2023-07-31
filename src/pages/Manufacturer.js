@@ -1,12 +1,16 @@
-// frontend/src/pages/Manufacturer.js or Transporter.js
 
 import React, { useState, useEffect } from 'react';
 import ManufacturerForm from '../components/ManufacturerForm';
 import ManufacturerLanding from '../components/ManufacturerLanding';
 import MessageDetails from '../components/MessageDetails'; // Import the MessageDetails component
+import { useLocation } from 'react-router-dom';
 
 const ManufacturerPage = () => {
   const [messages, setMessages] = useState([]);
+  const [ transporters, setTransporters ] = useState([]);
+
+  const location = useLocation();
+  const { username } = location.state;
 
   useEffect(() => {
     // Implement fetching messages logic here (e.g., making API requests to get messages)
@@ -29,13 +33,24 @@ const ManufacturerPage = () => {
     ]);
   }, []);
 
+  useEffect(()=>{ fetchtTransporterData() }, [] );
+
+  const fetchtTransporterData = async() => {
+    const transporterData = await fetch("http://localhost:5000/api/transporter/all");
+    let jsonResponse = await transporterData.json();
+    if( jsonResponse ){
+      setTransporters( jsonResponse );
+    }
+ };
+
   return (
     <div>
       <h1>Manufacturer Dashboard</h1>
-      <ManufacturerForm />
-      <ManufacturerLanding />
+      <h2>{username}</h2>
+      <ManufacturerForm transporters = {transporters} username={username} />
+      <ManufacturerLanding username={username} />
       {/* Pass the "messages" array to the MessageDetails component */}
-      <MessageDetails messages={messages} />
+      {/* <MessageDetails messages={messages} /> */}
     </div>
   );
 };

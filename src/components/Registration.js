@@ -5,6 +5,7 @@ const Registration = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('manufacturer'); // Default value set to 'manufacturer'
+  let token;
 
   //axios link to be checked
 
@@ -28,6 +29,8 @@ const Registration = () => {
 
         // Registration successful for transporter
         console.log('Transporter registration successful:', response.data);
+        token= response.data.token;
+        console.log(token);
 
         // You can handle successful registration here, such as showing a success message or redirecting the user to the login page
       }

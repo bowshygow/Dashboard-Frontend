@@ -4,15 +4,18 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Manufacturer from './pages/Manufacturer';
 import Transporter from './pages/Transporter';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <Router>
       <Switch>
+        
         <Route exact path="/" component={Login} />
         <Route path="/register" component={Registration} />
         <Route path="/manufacturer" component={Manufacturer} />
         <Route path="/transporter" component={Transporter} />
+        <ToastContainer />
         {/* Add any other routes as needed */}
       </Switch>
     </Router>
