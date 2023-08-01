@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ListGroup, ListGroupItem } from 'react-bootstrap'; // Import Bootstrap components
 
 const ManufacturerLanding = ({ username }) => {
   const [messages, setMessages] = useState([]);
@@ -19,10 +20,10 @@ const ManufacturerLanding = ({ username }) => {
 
   return (
     <div>
-      <h2>Manufacturer Landing</h2>
-      <ul>
+      <h2>Orders</h2>
+      <ListGroup>
         {messages.map((message) => (
-          <li key={message.order_id}>
+          <ListGroupItem key={message.order_id}>
             <h3>Order ID: {message.order_id}</h3>
             <p>
               <strong>From:</strong> {message.from}
@@ -48,9 +49,9 @@ const ManufacturerLanding = ({ username }) => {
               <p style={{ color: 'red' }}>Order Not Accepted</p>
             )}
             <hr />
-          </li>
+          </ListGroupItem>
         ))}
-      </ul>
+      </ListGroup>
     </div>
   );
 };

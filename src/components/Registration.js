@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Alert, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
+import LogoutButton from './LogoutButton';
+import './FormStyles.css'; // Import the form style CSS file
 
 const Registration = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('manufacturer'); // Default value set to 'manufacturer'
-  let token;
-
-  //axios link to be checked
+  const [userType, setUserType] = useState('manufacturer');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegister = async () => {
     try {
@@ -18,9 +20,8 @@ const Registration = () => {
         });
 
         // Registration successful for manufacturer
-        console.log('Manufacturer registration successful:', response.data);
-
-        // You can handle successful registration here, such as showing a success message or redirecting the user to the login page
+        setSuccessMessage('Manufacturer registration successful');
+        setErrorMessage('');
       } else if (userType === 'transporter') {
         const response = await axios.post('http://localhost:5000/api/auth/register/transporter', {
           username,
@@ -28,30 +29,44 @@ const Registration = () => {
         });
 
         // Registration successful for transporter
-        console.log('Transporter registration successful:', response.data);
-        token= response.data.token;
-        console.log(token);
-
-        // You can handle successful registration here, such as showing a success message or redirecting the user to the login page
+        setSuccessMessage('Transporter registration successful');
+        setErrorMessage('');
       }
     } catch (error) {
       // Registration failed
-      console.error('Registration failed:', error.message);
+      setSuccessMessage('');
+      setErrorMessage('Registration failed');
 
-      // You can handle registration errors here, such as showing an error message to the user
+      console.error('Registration failed:', error.message);
     }
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Registration</h2>
-      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <select value={userType} onChange={(e) => setUserType(e.target.value)}>
-        <option value="manufacturer">Manufacturer</option>
-        <option value="transporter">Transporter</option>
-      </select>
-      <button onClick={handleRegister}>Register</button>
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+      <Form>
+        <Form.Group className="form-group">
+          <Form.Label className="form-label">Username</Form.Label>
+          <Form.Control type="text" className="form-input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </Form.Group>
+        <Form.Group className="form-group">
+          <Form.Label className="form-label">Password</Form.Label>
+          <Form.Control type="password" className="form-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </Form.Group>
+        <Form.Group className="form-group">
+          <Form.Label className="form-label">User Type</Form.Label>
+          <Form.Control as="select" className="form-select" value={userType} onChange={(e) => setUserType(e.target.value)}>
+            <option value="manufacturer">Manufacturer</option>
+            <option value="transporter">Transporter</option>
+          </Form.Control>
+        </Form.Group>
+        <Button variant="primary" onClick={handleRegister} className="form-button">
+          Register
+        </Button>
+      </Form>
+      <LogoutButton />
     </div>
   );
 };

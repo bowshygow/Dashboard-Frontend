@@ -4,6 +4,7 @@ import ManufacturerForm from '../components/ManufacturerForm';
 import ManufacturerLanding from '../components/ManufacturerLanding';
 import MessageDetails from '../components/MessageDetails'; // Import the MessageDetails component
 import { useLocation } from 'react-router-dom';
+import LogoutButton from '../components/LogoutButton';
 
 const ManufacturerPage = () => {
   const [messages, setMessages] = useState([]);
@@ -46,7 +47,7 @@ const ManufacturerPage = () => {
   return (
     <div>
       <h1>Manufacturer Dashboard</h1>
-      <h2>{username}</h2>
+      <h2>Welcome {username}</h2>
       <ManufacturerForm transporters = {transporters} username={username} />
       <ManufacturerLanding username={username} />
       {/* Pass the "messages" array to the MessageDetails component */}

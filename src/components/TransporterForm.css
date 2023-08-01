@@ -1,0 +1,14 @@
+/* TransporterForm.css */
+
+.transporter-form {
+    margin-bottom: 20px; /* Add some spacing between the form and other elements */
+  }
+  
+  .transporter-form .form-group {
+    margin-bottom: 15px; /* Add spacing between form groups */
+  }
+  
+  .transporter-form .btn-primary {
+    margin-top: 10px; /* Add spacing above the button */
+  }
+  

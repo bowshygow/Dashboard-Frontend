@@ -5,12 +5,15 @@ import Registration from './pages/Registration';
 import Manufacturer from './pages/Manufacturer';
 import Transporter from './pages/Transporter';
 import { ToastContainer } from 'react-toastify';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 function App() {
   return (
     <Router>
       <Switch>
-        
+      
         <Route exact path="/" component={Login} />
         <Route path="/register" component={Registration} />
         <Route path="/manufacturer" component={Manufacturer} />

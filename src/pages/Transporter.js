@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import TransporterForm from '../components/TransporterForm';
 import TransporterLanding from '../components/TransporterLanding';
 import MessageDetails from '../components/MessageDetails'; // Import the MessageDetails component
+import LogoutButton from '../components/LogoutButton';
 
 const TransporterPage = () => {
   const [messages, setMessages] = useState([]);
@@ -39,6 +40,7 @@ const TransporterPage = () => {
       <h1>Transporter Dashboard</h1>
       <TransporterForm username={username}/>
       <TransporterLanding username={username} />
+
       {/* <MessageDetails messages={messages} /> */}
     </div>
   );
