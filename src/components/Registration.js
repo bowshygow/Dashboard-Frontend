@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap'; // Import Bootstrap components
 import LogoutButton from './LogoutButton';
 import './FormStyles.css'; // Import the form style CSS file
+import api from '../services/api';
 
 const Registration = () => {
   const [username, setUsername] = useState('');
@@ -19,6 +20,13 @@ const Registration = () => {
           password,
         });
 
+        // const response = await api('auth/register/manufacturer', 'p', {
+        //   username,
+        //   password
+        //   // Add any other required fields according to your API
+        // });
+        
+
         // Registration successful for manufacturer
         setSuccessMessage('Manufacturer registration successful');
         setErrorMessage('');
@@ -27,6 +35,12 @@ const Registration = () => {
           username,
           password,
         });
+
+        // const response = await api('auth/register/manufacturer', 'p', {
+        //   username,
+        //   password
+        // });
+        
 
         // Registration successful for transporter
         setSuccessMessage('Transporter registration successful');

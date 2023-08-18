@@ -5,20 +5,26 @@ import jwt_decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 import RegisterButton from './RegisterButton';
 import './FormStyles.css'; // Import FormStyles.css
+import api from '../services/api';
+import { useUserType } from './UserTypeContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { userType, setUserType } = useUserType();
 
   const history = useHistory();
 
   const handleLogin = async () => {
     try {
-      // Make an API request to login the user
+      
+      //Make an API request to login the user
       const response = await axios.post('http://localhost:5000/api/auth/login', {
         username,
         password,
       });
+
+      // const response = await api('auth/login','p',{username,password});
 
       // Login successful
       console.log('Login successful:', response.data);
@@ -40,12 +46,14 @@ const Login = () => {
           pathname: '/manufacturer',
           state: { username }, // Pass the username as a state object
         });
+        setUserType(username);
         window.location.reload();
       } else if (decodedToken.userType === 'transporter') {
         history.push({
           pathname: '/transporter',
           state: { username }, // Pass the username as a state object
         });
+        setUserType(username);
         window.location.reload();
       }
     } catch (error) {

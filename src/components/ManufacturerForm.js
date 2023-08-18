@@ -3,14 +3,17 @@ import axios from 'axios';
 import './FormStyles.css'; // Import the shared form styles
 import { Form, Button } from 'react-bootstrap'; // Import Bootstrap form components
 import LogoutButton from './LogoutButton';
+import api from '../services/api';
 
-const ManufacturerForm = ({ transporters, username }) => {
+const ManufacturerForm = ({ transporters, username,sharedVariable, setSharedVariable }) => {
   const [orderId, setOrderId] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [quantity, setQuantity] = useState('1');
   const [pickupAddress, setPickupAddress] = useState('');
   const [selectedTransporter, setSelectedTransporter] = useState('');
+
+  console.log('transporters',transporters);
 
   const handleFormSubmit = async () => {
     const formData = {
@@ -22,12 +25,23 @@ const ManufacturerForm = ({ transporters, username }) => {
       transporter: selectedTransporter,
     };
 
+    let body = {
+      ...formData,
+      username: username,
+    };
+
     try {
-      console.log(username);
-      const response = await axios.post('http://localhost:5000/api/manufacturer/order', {
-        ...formData,
-        username: username,
-      });
+      console.log('username',username);
+      console.log('body',body);
+      localStorage.getItem('authToken');
+      // const response = await axios.post('http://localhost:5000/api/manufacturer/order', {
+      //   ...formData,
+      //   username: username,
+      // });
+
+      const response= api('manufacturer/order','p',body);
+
+      setSharedVariable("New Value from First Sibling");
 
       console.log('Order created successfully:', response.data);
 

@@ -9,39 +9,22 @@ import LogoutButton from '../components/LogoutButton';
 
 const TransporterPage = () => {
   const [messages, setMessages] = useState([]);
+  const [sharedVariable, setSharedVariable] = useState("Initial Value");
 
   const location = useLocation();
   const { username } = location.state;
 
-
-  // useEffect(() => {
-  //   // Implement fetching messages logic here (e.g., making API requests to get messages)
-  //   // Update the "messages" state with the received messages
-  //   // For this example, we'll use a dummy list of messages
-  //   setMessages([
-  //     {
-  //       order_id: 'XB120',
-  //       from: 'Manufacturer A',
-  //       to: 'Destination B',
-  //       content: 'This is the content of message 1 from Manufacturer A.',
-  //     },
-  //     {
-  //       order_id: 'XB121',
-  //       from: 'Manufacturer C',
-  //       to: 'Destination D',
-  //       content: 'This is the content of message 2 from Manufacturer C.',
-  //     },
-  //     // Add more messages as needed
-  //   ]);
-  // }, []);
-
   return (
     <div>
       <h1>Transporter Dashboard</h1>
-      <TransporterForm username={username}/>
-      <TransporterLanding username={username} />
-
-      {/* <MessageDetails messages={messages} /> */}
+      <TransporterForm 
+        username={username} 
+        sharedVariable={sharedVariable}
+        setSharedVariable={setSharedVariable} />
+      
+      <TransporterLanding 
+        username={username} 
+        sharedVariable={sharedVariable} />
     </div>
   );
 };

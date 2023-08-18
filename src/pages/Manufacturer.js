@@ -1,4 +1,4 @@
-
+import api from '../services/api';
 import React, { useState, useEffect } from 'react';
 import ManufacturerForm from '../components/ManufacturerForm';
 import ManufacturerLanding from '../components/ManufacturerLanding';
@@ -9,49 +9,36 @@ import LogoutButton from '../components/LogoutButton';
 const ManufacturerPage = () => {
   const [messages, setMessages] = useState([]);
   const [ transporters, setTransporters ] = useState([]);
+  const [sharedVariable, setSharedVariable] = useState("Initial Value");
+  
 
   const location = useLocation();
   const { username } = location.state;
 
-  useEffect(() => {
-    // Implement fetching messages logic here (e.g., making API requests to get messages)
-    // Update the "messages" state with the received messages
-    // For this example, we'll use a dummy list of messages
-    setMessages([
-      {
-        order_id: 'XB120',
-        from: 'Source A',
-        to: 'Destination B',
-        content: 'This is the content of message 1.',
-      },
-      {
-        order_id: 'XB121',
-        from: 'Source C',
-        to: 'Destination D',
-        content: 'This is the content of message 2.',
-      },
-      // Add more messages as needed
-    ]);
-  }, []);
-
   useEffect(()=>{ fetchtTransporterData() }, [] );
 
   const fetchtTransporterData = async() => {
-    const transporterData = await fetch("http://localhost:5000/api/transporter/all");
+    // const transporterData = await fetch("http://localhost:5000/api/transporter/all");
+
+    const transporterData = await api('transporter/all', 'g');
     let jsonResponse = await transporterData.json();
     if( jsonResponse ){
       setTransporters( jsonResponse );
     }
+    // if( transporterData ){
+    // setTransporters( transporterData );
+    // } 
+    
  };
 
   return (
     <div>
       <h1>Manufacturer Dashboard</h1>
       <h2>Welcome {username}</h2>
-      <ManufacturerForm transporters = {transporters} username={username} />
-      <ManufacturerLanding username={username} />
-      {/* Pass the "messages" array to the MessageDetails component */}
-      {/* <MessageDetails messages={messages} /> */}
+      <ManufacturerForm transporters = {transporters} username={username}
+              sharedVariable={sharedVariable}
+              setSharedVariable={setSharedVariable} />
+      <ManufacturerLanding username={username} sharedVariable={sharedVariable} />
     </div>
   );
 };

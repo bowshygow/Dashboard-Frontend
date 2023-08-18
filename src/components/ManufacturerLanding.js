@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ListGroup, ListGroupItem } from 'react-bootstrap'; // Import Bootstrap components
+import api from '../services/api';
 
-const ManufacturerLanding = ({ username }) => {
+const ManufacturerLanding = ({ username,sharedVariable  }) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/manufacturer/orders', { username });
-        setMessages(response.data.data);
+        // const response = await axios.post('http://localhost:5000/api/manufacturer/orders', { username });
+        let response = (await api('manufacturer/orders','p',{ username }));
+        response= await response.json();
+        console.log('messages',response);
+        setMessages(response.data);
       } catch (error) {
         console.error('Error fetching messages:', error.message);
       }
     };
 
     fetchMessages();
-  }, [username]);
+  }, [sharedVariable]);
 
   return (
     <div>
       <h2>Orders</h2>
       <ListGroup>
-        {messages.map((message) => (
+        {messages ? (messages.map((message) => (
           <ListGroupItem key={message.order_id}>
             <h3>Order ID: {message.order_id}</h3>
             <p>
@@ -50,7 +54,10 @@ const ManufacturerLanding = ({ username }) => {
             )}
             <hr />
           </ListGroupItem>
-        ))}
+        ))):(
+          <p>Still no orders???? go create some</p>
+        )
+        }
       </ListGroup>
     </div>
   );
